@@ -1,0 +1,27 @@
+
+      alias k=kubectl
+      k create configmap db-config --from-literal=MYSQL_DATABASE=sqldb
+      k create secret generic db-secret --from-literal=MYSQL_ROOT_PASSWORD=rootpassword
+      k create -f mysql.pod.yaml
+     k get pods
+     k expose pod mysql-pod --port=3306 --target-port=3306
+     k get svc
+     k create cm phpadmin-config --from-literal=PMA_HOST=10.109.247.203 --from-literal=PMA_PORT=3306  -> mysql ipsini al. ve port belirtmen gerek
+     k create secret generic phpadmin-secret --from-literal=PMA_USER=root --from-literal=PMA_PASSWORD=rootpassword
+     k get pods
+     k create -f myadmin.yaml 
+     k get pods
+     k expose pod phpadmin-pod --type=NodePort --port=8099 --target-port=80 --name=phpadmin-svc
+     k get svc
+   php admin'e gir NodePort ile sql dosyasını import et
+    docker build -t sariaydinalparslan:phpmyadmin .
+     docker login
+   php dosyasında gerekli değişiklikleri yap.-> mysql db portunu yaz. username,şifre ve db adı
+     docker build -t  sariaydinalparslan/php .
+     docker push sariaydinalparslan/php:latest
+     k run php --image=sariaydinalparslan/php:latest
+   k get pods
+    k expose pod php --type=NodePort --port=8088 --target-port=80 --name=php-svcc
+     k get pods
+   k get svc
+	nodeport ile ulaşabilirsin artık
